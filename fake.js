@@ -26,48 +26,6 @@ async function run() {
     const alumniCollection = client.db("BMRC").collection("Alumni");
 
     //Get All News
-    app.get("/news", async (req, res) => {
-      const news = await newsCollection.find().toArray();
-      res.send(news);
-    });
-
-    app.get("/news/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      const news = await newsCollection.findOne(query);
-      res.send(news);
-    });
-
-    app.post("/news", async (req, res) => {
-      const news = req.body;
-      const news_add = await newsCollection.insertOne(news);
-      res.send(news_add);
-    });
-
-    app.delete("/news/:_id", async (req, res) => {
-      const id = req.params._id;
-      const filter = { _id: ObjectId(id) };
-      const result = await newsCollection.deleteOne(filter);
-      res.send(result);
-    });
-
-    app.put(`/news/:id`, async (req, res) => {
-      const id = req.params.id;
-      const updatedProduct = req.body;
-      const filter = { _id: ObjectId(id) };
-      const options = { upsert: true };
-      const updatedDoc = {
-        $set: {
-          title: updatedProduct.title,
-          description: updatedProduct.description,
-        },
-      };
-      const result = await data.updateOne(filter, updatedDoc, options);
-      res.send(result);
-    });
-
-    //Get All Event
-    
     app.get("/event", async (req, res) => {
       const event = await eventCollection.find().toArray();
       res.send(event);
@@ -93,6 +51,7 @@ async function run() {
       res.send(result);
     });
 
+
     app.put(`/event/:id`, async (req, res) => {
       const id = req.params.id;
       const updatedProduct = req.body;
@@ -101,14 +60,20 @@ async function run() {
       const updatedDoc = {
         $set: {
           title: updatedProduct.title,
-          description: updatedProduct.description,
+          description: updatedProduct.description
         },
       };
       const result = await data.updateOne(filter, updatedDoc, options);
       res.send(result);
     });
 
-  } finally {
+
+
+  } 
+  
+  finally {
+
+
   }
 }
 

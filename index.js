@@ -23,6 +23,7 @@ async function run() {
     const newsCollection = client.db("BMRC").collection("News");
     const eventCollection = client.db("BMRC").collection("Event");
     const memberCollection = client.db("BMRC").collection("Member");
+    const genenralMemberCollection = client.db("BMRC").collection("General_Member");
     const alumniCollection = client.db("BMRC").collection("Alumni");
 
     //Get All News
@@ -94,6 +95,47 @@ async function run() {
     });
 
     app.put(`/event/:id`, async (req, res) => {
+      const id = req.params.id;
+      const updatedProduct = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          title: updatedProduct.title,
+          description: updatedProduct.description,
+        },
+      };
+      const result = await data.updateOne(filter, updatedDoc, options);
+      res.send(result);
+    });
+
+    // Genenral Member Collection
+    app.get("/generalmember/", async (req, res) => {
+      const g_member = await genenralMemberCollection.find().toArray();
+      res.send(g_member);
+    });
+
+    app.get("/generalmember/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const event = await genenralMemberCollection.findOne(query);
+      res.send(event);
+    });
+
+    app.post("/generalmember", async (req, res) => {
+      const event = req.body;
+      const event_add = await genenralMemberCollection.insertOne(event);
+      res.send(event_add);
+    });
+
+    app.delete("/generalmember/:_id", async (req, res) => {
+      const id = req.params._id;
+      const filter = { _id: ObjectId(id) };
+      const result = await genenralMemberCollection.deleteOne(filter);
+      res.send(result);
+    });
+
+    app.put(`/generalmember/:id`, async (req, res) => {
       const id = req.params.id;
       const updatedProduct = req.body;
       const filter = { _id: ObjectId(id) };
